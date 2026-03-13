@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+package-lock.json
+package.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+
+# Skills
+skills/
+skills-lock.json
+.agent/
+.agents/
+.continue/
+.kiro/
+.qoder/
+.trae/

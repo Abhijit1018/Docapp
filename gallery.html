@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Serenity Dental & Medical</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+    <style>
+        :root {
+            --color-base: #F9F7F4;
+            --color-base-alt: #F5F2ED;
+            --color-text: #2C2C2C;
+            --color-text-muted: #5A5A5A;
+            --color-sage: #8AAF9E;
+            --color-sage-dark: #6B917C;
+            --color-slate: #7A9BB5;
+            --color-gold: #C9A96E;
+            --color-white: #FFFFFF;
+            
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-sans: 'DM Sans', system-ui, sans-serif;
+            
+            --shadow-soft: 0 4px 20px rgba(44, 44, 44, 0.06);
+            --shadow-medium: 0 8px 30px rgba(44, 44, 44, 0.1);
+            --shadow-lifted: 0 15px 40px rgba(44, 44, 44, 0.12);
+            
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 40px;
+            
+            --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        
+        body {
+            font-family: var(--font-sans);
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--color-text);
+            background-color: var(--color-base);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 500; line-height: 1.2; }
+        a { text-decoration: none; color: inherit; }
+        
+        .scroll-progress {
+            position: fixed; top: 0; left: 0;
+            width: 0%; height: 3px;
+            background: linear-gradient(90deg, var(--color-sage), var(--color-gold));
+            z-index: 10001; transition: width 0.1s linear;
+        }
+
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%;
+            padding: 1.25rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000;
+            background: rgba(249, 247, 244, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            font-weight: 600;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .logo i { color: var(--color-sage); }
+
+        .nav-links {
+            display: flex; align-items: center; gap: 2.5rem;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--color-text-muted);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 1.5px;
+            background: var(--color-gold);
+            transition: width 0.3s var(--transition-smooth);
+        }
+
+        .nav-links a:hover, .nav-links a.active { color: var(--color-text); }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+        .nav-cta {
+            padding: 0.75rem 1.75rem;
+            background: var(--color-sage);
+            color: var(--color-white);
+            border-radius: var(--radius-xl);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s var(--transition-smooth);
+        }
+
+        .nav-cta:hover { background: var(--color-sage-dark); transform: translateY(-2px); }
+
+        .hamburger {
+            display: none;
+            flex-direction: column; gap: 5px;
+            cursor: pointer; padding: 10px; z-index: 1001;
+        }
+        .hamburger span {
+            width: 25px; height: 2px;
+            background: var(--color-text);
+            transition: all 0.3s var(--transition-smooth);
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .mobile-menu {
+            position: fixed; top: 0; right: -100%;
+            width: 80%; max-width: 350px; height: 100vh;
+            background: var(--color-white);
+            padding: 6rem 2rem 2rem;
+            transition: right 0.4s var(--transition-smooth);
+            box-shadow: var(--shadow-lifted); z-index: 999;
+        }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu a {
+            display: block; padding: 1rem 0;
+            font-size: 1.25rem; font-weight: 500;
+            border-bottom: 1px solid var(--color-base-alt);
+        }
+
+        .mobile-overlay {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0; visibility: hidden;
+            transition: all 0.3s var(--transition-smooth); z-index: 998;
+        }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+
+        /* Page Header */
+        .page-header {
+            padding: 10rem 5% 5rem;
+            background: linear-gradient(135deg, var(--color-base-alt) 0%, var(--color-base) 100%);
+            text-align: center;
+            position: relative;
+        }
+        .page-header::before {
+            content: '';
+            position: absolute; top: -30%; right: -10%;
+            width: 60%; height: 150%;
+            background: radial-gradient(ellipse, rgba(138, 175, 158, 0.08) 0%, transparent 70%);
+        }
+        .page-header h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+        }
+        .page-header h1 span { font-style: italic; color: var(--color-sage-dark); }
+        .page-header p {
+            font-size: 1.15rem; color: var(--color-text-muted);
+            max-width: 600px; margin: 0 auto;
+        }
+        .breadcrumb {
+            display: flex; justify-content: center; gap: 0.75rem;
+            margin-top: 2rem; font-size: 0.9rem; color: var(--color-text-muted);
+        }
+        .breadcrumb a:hover { color: var(--color-sage-dark); }
+
+        /* Gallery Filter */
+        .gallery-filter {
+            padding: 2rem 5%;
+            background: var(--color-white);
+            border-bottom: 1px solid var(--color-base-alt);
+            position: sticky;
+            top: 80px;
+            z-index: 100;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--color-base);
+            border: none;
+            border-radius: var(--radius-xl);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            transition: all 0.3s var(--transition-smooth);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--color-sage);
+            color: var(--color-white);
+        }
+
+        /* Gallery Grid */
+        .gallery-section {
+            padding: 4rem 5%;
+            background: var(--color-base);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 280px;
+            gap: 1.25rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--color-white);
+        }
+
+        .gallery-item.large {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .gallery-item.wide {
+            grid-column: span 2;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s var(--transition-smooth);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            color: var(--color-white);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s var(--transition-smooth);
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-overlay h3 {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .gallery-overlay p {
+            font-size: 0.85rem;
+            opacity: 0.85;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s var(--transition-smooth);
+        }
+
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: var(--radius-sm);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--color-white);
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+
+        .lightbox-close:hover {
+            transform: rotate(90deg);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: var(--color-white);
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .lightbox-nav:hover {
+            background: var(--color-sage);
+            color: var(--color-white);
+        }
+
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+
+        /* Virtual Tour */
+        .virtual-tour {
+            padding: 5rem 5%;
+            background: var(--color-white);
+        }
+
+        .tour-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .tour-content h2 {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            margin-bottom: 1rem;
+        }
+
+        .tour-content > p {
+            color: var(--color-text-muted);
+            margin-bottom: 3rem;
+        }
+
+        .tour-rooms {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .tour-room {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            aspect-ratio: 16/10;
+            cursor: pointer;
+        }
+
+        .tour-room img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s var(--transition-smooth);
+        }
+
+        .tour-room:hover img {
+            transform: scale(1.05);
+        }
+
+        .tour-room-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.25rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: var(--color-white);
+        }
+
+        .tour-room-overlay i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tour-room-overlay h3 {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 5rem 5%;
+            background: linear-gradient(135deg, var(--color-sage) 0%, var(--color-slate) 100%);
+            text-align: center;
+        }
+        .cta-content h2 {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            color: var(--color-white);
+            margin-bottom: 1rem;
+        }
+        .cta-content p {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center; gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--color-white);
+            color: var(--color-sage-dark);
+            border-radius: var(--radius-xl);
+            font-weight: 600;
+            transition: all 0.3s var(--transition-smooth);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: var(--shadow-medium); }
+
+        /* Footer */
+        .footer {
+            background: var(--color-text);
+            color: var(--color-base);
+            padding: 4rem 5% 2rem;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+        }
+        .footer-logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex; align-items: center; gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .footer-logo i { color: var(--color-sage); }
+        .footer-tagline {
+            color: rgba(249, 247, 244, 0.6);
+            font-size: 0.95rem;
+            max-width: 280px;
+        }
+        .footer-nav { display: flex; gap: 3rem; }
+        .footer-nav-column h4 {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.25rem;
+            color: var(--color-gold);
+        }
+        .footer-nav-column a {
+            display: block;
+            color: rgba(249, 247, 244, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+        .footer-nav-column a:hover { color: var(--color-base); }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(249, 247, 244, 0.1);
+            color: rgba(249, 247, 244, 0.5);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-auto-rows: 200px;
+            }
+            .gallery-item.large,
+            .gallery-item.wide {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+            .footer-content { flex-direction: column; gap: 2rem; }
+            .footer-nav { flex-wrap: wrap; gap: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .nav-cta { display: none; }
+            .page-header { padding: 8rem 4% 3rem; }
+            .page-header h1 { font-size: 2.25rem; }
+            .page-header p { font-size: 1rem; }
+            
+            .gallery-filter { 
+                padding: 1rem 4%; 
+                top: 60px;
+            }
+            .filter-buttons { gap: 0.5rem; }
+            .filter-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+            
+            .gallery-section { padding: 2rem 4%; }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: 220px;
+                gap: 1rem;
+            }
+            
+            .gallery-overlay {
+                padding: 1rem;
+            }
+            .gallery-overlay h3 { font-size: 0.9rem; }
+            .gallery-overlay p { font-size: 0.75rem; }
+            
+            .virtual-tour { padding: 3rem 4%; }
+            .tour-rooms { 
+                grid-template-columns: repeat(2, 1fr); 
+                gap: 1rem;
+            }
+            
+            .cta-section { padding: 3rem 4%; }
+        }
+
+        @media (max-width: 480px) {
+            .page-header { padding: 7rem 4% 2.5rem; }
+            .page-header h1 { font-size: 1.875rem; }
+            .tour-content h2 { font-size: 1.5rem; }
+            .tour-rooms { grid-template-columns: 1fr; }
+            .breadcrumb { font-size: 0.8rem; }
+            .gallery-item { min-height: 180px; }
+        }
+
+        /* Touch optimizations */
+        @media (hover: none) {
+            .gallery-item:hover img { transform: none; }
+            .gallery-item:active img { transform: scale(1.03); }
+            .filter-btn:hover { transform: none; }
+            .filter-btn:active { background: var(--color-sage); color: var(--color-white); }
+            .tour-room:hover img { transform: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="ph-fill ph-tooth"></i>
+            Serenity
+        </a>
+        <ul class="nav-links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="testimonials.html">Testimonials</a></li>
+            <li><a href="gallery.html" class="active">Gallery</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="booking.html" class="nav-cta">Book Appointment</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </nav>
+
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="testimonials.html">Testimonials</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="booking.html" class="nav-cta" style="display: inline-block; margin-top: 1rem; text-align: center;">Book Appointment</a>
+    </div>
+
+    <header class="page-header">
+        <h1>Our <span>Gallery</span></h1>
+        <p>Take a visual tour of our beautiful clinic and see the smiles we've created</p>
+        <div class="breadcrumb">
+            <a href="index.html">Home</a>
+            <span>/</span>
+            <span>Gallery</span>
+        </div>
+    </header>
+
+    <div class="gallery-filter">
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="clinic">Clinic</button>
+            <button class="filter-btn" data-filter="treatment">Treatment Rooms</button>
+            <button class="filter-btn" data-filter="smile">Smile Makeovers</button>
+            <button class="filter-btn" data-filter="team">Our Team</button>
+        </div>
+    </div>
+
+    <section class="gallery-section">
+        <div class="gallery-grid">
+            <!-- Clinic Images -->
+            <div class="gallery-item large" data-category="clinic">
+                <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&q=80" alt="Reception Area">
+                <div class="gallery-overlay">
+                    <h3>Welcome Reception</h3>
+                    <p>Our warm and inviting entrance</p>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="clinic">
+                <img src="https://images.unsplash.com/photo-1606265752439-1f18756aa5fc?w=400&q=80" alt="Treatment Room">
+                <div class="gallery-overlay">
+                    <h3>Treatment Suite</h3>
+                    <p>Private treatment rooms</p>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="clinic">
+                <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=400&q=80" alt="Modern Equipment">
+                <div class="gallery-overlay">
+                    <h3>State-of-the-Art</h3>
+                    <p>Latest technology</p>
+                </div>
+            </div>
+            <!-- Treatment Rooms -->
+            <div class="gallery-item wide" data-category="treatment">
+                <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800&q=80" alt="Relaxation Suite">
+                <div class="gallery-overlay">
+                    <h3>Patient Relaxation Suite</h3>
+                    <p>Comfortable space for procedures</p>
+                </div>
+            </div>
+            <!-- Smile Makeovers -->
+            <div class="gallery-item" data-category="smile">
+                <img src="https://images.unsplash.com/photo-1606265698531-7ce32d100809?w=400&q=80" alt="Before Treatment">
+                <div class="gallery-overlay">
+                    <h3>Before</h3>
+                    <p>Initial consultation</p>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="smile">
+                <img src="https://images.unsplash.com/photo-1606265752227-1c3738beafc9?w=400&q=80" alt="After Treatment">
+                <div class="gallery-overlay">
+                    <h3>After</h3>
+                    <p>Beautiful smile result</p>
+                </div>
+            </div>
+            <!-- Team -->
+            <div class="gallery-item wide" data-category="team">
+                <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=800&q=80" alt="Dr. Chen">
+                <div class="gallery-overlay">
+                    <h3>Dr. Alexandra Chen</h3>
+                    <p>Lead Dentist</p>
+                </div>
+            </div>
+            <!-- More Clinic -->
+            <div class="gallery-item" data-category="clinic">
+                <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&q=80" alt="Consultation Room">
+                <div class="gallery-overlay">
+                    <h3>Consultation Room</h3>
+                    <p>Private discussion space</p>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="clinic">
+                <img src="https://images.unsplash.com/photo-1629909615184-74f495363b67?w=400&q=80" alt="Sterilization">
+                <div class="gallery-overlay">
+                    <h3>Sterile Environment</h3>
+                    <p>Safety first</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="virtual-tour">
+        <div class="tour-content">
+            <h2>Take a Virtual Tour</h2>
+            <p>Explore our clinic from the comfort of your home</p>
+            <div class="tour-rooms">
+                <div class="tour-room">
+                    <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=600&q=80" alt="Reception">
+                    <div class="tour-room-overlay">
+                        <i class="ph-fill ph-door"></i>
+                        <h3>Reception</h3>
+                    </div>
+                </div>
+                <div class="tour-room">
+                    <img src="https://images.unsplash.com/photo-1606265752439-1f18756aa5fc?w=600&q=80" alt="Treatment Room">
+                    <div class="tour-room-overlay">
+                        <i class="ph-fill ph-tooth"></i>
+                        <h3>Treatment Room</h3>
+                    </div>
+                </div>
+                <div class="tour-room">
+                    <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&q=80" alt="Relaxation Suite">
+                    <div class="tour-room-overlay">
+                        <i class="ph-fill ph-couch"></i>
+                        <h3>Relaxation Suite</h3>
+                    </div>
+                </div>
+                <div class="tour-room">
+                    <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=600&q=80" alt="Consultation">
+                    <div class="tour-room-overlay">
+                        <i class="ph-fill ph-chats-circle"></i>
+                        <h3>Consultation</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Experience Serenity in Person</h2>
+            <p>Schedule a tour and see our beautiful clinic for yourself.</p>
+            <a href="booking.html" class="btn-primary">
+                <i class="ph-bold ph-calendar-plus"></i>
+                Schedule a Visit
+            </a>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">
+            <i class="ph-fill ph-x"></i>
+        </button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev">
+            <i class="ph-fill ph-caret-left"></i>
+        </button>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext">
+            <i class="ph-fill ph-caret-right"></i>
+        </button>
+        <div class="lightbox-content">
+            <img src="" alt="" id="lightboxImg">
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <i class="ph-fill ph-tooth"></i>
+                    Serenity
+                </div>
+                <p class="footer-tagline">Premium dental care in an atmosphere of tranquility. Your smile is our masterpiece.</p>
+            </div>
+            <nav class="footer-nav">
+                <div class="footer-nav-column">
+                    <h4>Quick Links</h4>
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="services.html">Services</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-nav-column">
+                    <h4>Services</h4>
+                    <a href="services.html">General Dentistry</a>
+                    <a href="services.html">Cosmetic Dentistry</a>
+                    <a href="services.html">Orthodontics</a>
+                    <a href="services.html">Emergency Care</a>
+                </div>
+                <div class="footer-nav-column">
+                    <h4>Contact</h4>
+                    <a href="tel:+13105558273">(310) 555-8273</a>
+                    <a href="mailto:hello@serenitydental.com">hello@serenitydental.com</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </nav>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Serenity Dental & Medical. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const scrollProgress = document.getElementById('scrollProgress');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            scrollProgress.style.width = scrollPercent + '%';
+        });
+
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+
+        function toggleMobileMenu() {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            mobileOverlay.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        hamburger.addEventListener('click', toggleMobileMenu);
+        mobileOverlay.addEventListener('click', toggleMobileMenu);
+
+        // Gallery Filter
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const filter = btn.dataset.filter;
+                
+                galleryItems.forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+        let currentIndex = 0;
+        const visibleItems = [...galleryItems].filter(item => item.style.display !== 'none');
+
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                currentIndex = index;
+                const img = item.querySelector('img');
+                lightboxImg.src = img.src.replace('w=400', 'w=1200').replace('w=600', 'w=1200').replace('w=800', 'w=1200');
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        lightboxClose.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        lightboxNext.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % galleryItems.length;
+            const img = galleryItems[currentIndex].querySelector('img');
+            lightboxImg.src = img.src.replace('w=400', 'w=1200').replace('w=600', 'w=1200').replace('w=800', 'w=1200');
+        });
+
+        lightboxPrev.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+            const img = galleryItems[currentIndex].querySelector('img');
+            lightboxImg.src = img.src.replace('w=400', 'w=1200').replace('w=600', 'w=1200').replace('w=800', 'w=1200');
+        });
+    </script>
+</body>
+</html>

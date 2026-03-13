@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Dr. Alexandra Chen | Serenity Dental & Medical</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+    <style>
+        /* ========== CSS VARIABLES ========== */
+        :root {
+            --color-base: #F9F7F4;
+            --color-base-alt: #F5F2ED;
+            --color-text: #2C2C2C;
+            --color-text-muted: #5A5A5A;
+            --color-sage: #8AAF9E;
+            --color-sage-dark: #6B917C;
+            --color-slate: #7A9BB5;
+            --color-slate-dark: #5C7A93;
+            --color-gold: #C9A96E;
+            --color-gold-dark: #A88B4F;
+            --color-white: #FFFFFF;
+            --color-cream: #FFFEF9;
+            
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-sans: 'DM Sans', system-ui, sans-serif;
+            
+            --shadow-soft: 0 4px 20px rgba(44, 44, 44, 0.06);
+            --shadow-medium: 0 8px 30px rgba(44, 44, 44, 0.1);
+            --shadow-lifted: 0 15px 40px rgba(44, 44, 44, 0.12);
+            
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 40px;
+            
+            --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        
+        body {
+            font-family: var(--font-sans);
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--color-text);
+            background-color: var(--color-base);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-serif);
+            font-weight: 500;
+            line-height: 1.2;
+            color: var(--color-text);
+        }
+
+        a { text-decoration: none; color: inherit; transition: color 0.3s var(--transition-smooth); }
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0; left: 0;
+            width: 0%; height: 3px;
+            background: linear-gradient(90deg, var(--color-sage), var(--color-gold));
+            z-index: 10001;
+            transition: width 0.1s linear;
+        }
+
+        /* ========== NAVIGATION ========== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            padding: 1.25rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.4s var(--transition-smooth);
+            background: rgba(249, 247, 244, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--color-text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i { color: var(--color-sage); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--color-text-muted);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 1.5px;
+            background: var(--color-gold);
+            transition: width 0.3s var(--transition-smooth);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--color-text);
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            padding: 0.75rem 1.75rem;
+            background: var(--color-sage);
+            color: var(--color-white);
+            border-radius: var(--radius-xl);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s var(--transition-smooth);
+        }
+
+        .nav-cta:hover {
+            background: var(--color-sage-dark);
+            transform: translateY(-2px);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 25px; height: 2px;
+            background: var(--color-text);
+            transition: all 0.3s var(--transition-smooth);
+        }
+
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0; right: -100%;
+            width: 80%;
+            max-width: 350px;
+            height: 100vh;
+            background: var(--color-white);
+            padding: 6rem 2rem 2rem;
+            transition: right 0.4s var(--transition-smooth);
+            box-shadow: var(--shadow-lifted);
+            z-index: 999;
+        }
+
+        .mobile-menu.active { right: 0; }
+        .mobile-menu a {
+            display: block;
+            padding: 1rem 0;
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--color-text);
+            border-bottom: 1px solid var(--color-base-alt);
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s var(--transition-smooth);
+            z-index: 998;
+        }
+
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+
+        /* ========== PAGE HEADER ========== */
+        .page-header {
+            padding: 10rem 5% 5rem;
+            background: linear-gradient(135deg, var(--color-base-alt) 0%, var(--color-base) 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 60%;
+            height: 150%;
+            background: radial-gradient(ellipse, rgba(138, 175, 158, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .page-header h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+        }
+
+        .page-header h1 span {
+            font-style: italic;
+            color: var(--color-sage-dark);
+        }
+
+        .page-header p {
+            font-size: 1.15rem;
+            color: var(--color-text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .breadcrumb {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+        }
+
+        .breadcrumb a:hover { color: var(--color-sage-dark); }
+
+        /* ========== ABOUT HERO SECTION ========== */
+        .about-hero {
+            padding: 5rem 5%;
+            background: var(--color-white);
+        }
+
+        .about-hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 5rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-image-container {
+            position: relative;
+        }
+
+        .about-image {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            aspect-ratio: 4/5;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-accent {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 120px;
+            height: 120px;
+            border: 2px solid var(--color-gold);
+            border-radius: var(--radius-md);
+            z-index: -1;
+        }
+
+        .image-badge {
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            background: var(--color-white);
+            padding: 1.25rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-medium);
+            text-align: center;
+        }
+
+        .image-badge .years {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--color-sage-dark);
+            line-height: 1;
+        }
+
+        .image-badge .label {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+
+        .about-intro h2 {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-intro h2 span {
+            font-style: italic;
+            color: var(--color-sage-dark);
+        }
+
+        .lead-text {
+            font-size: 1.15rem;
+            color: var(--color-text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .credentials-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .credential-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.25rem;
+            background: var(--color-base);
+            border-radius: var(--radius-xl);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .credential-badge i { color: var(--color-gold); }
+
+        /* ========== PHILOSOPHY SECTION ========== */
+        .philosophy-section {
+            padding: 5rem 5%;
+            background: var(--color-base);
+        }
+
+        .philosophy-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .philosophy-content h2 {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            margin-bottom: 2rem;
+        }
+
+        .philosophy-quote {
+            position: relative;
+            padding: 2.5rem;
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .philosophy-quote::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 30px;
+            font-family: var(--font-serif);
+            font-size: 5rem;
+            color: var(--color-sage);
+            opacity: 0.3;
+            line-height: 1;
+        }
+
+        .philosophy-quote p {
+            font-family: var(--font-serif);
+            font-size: 1.35rem;
+            font-style: italic;
+            line-height: 1.8;
+            color: var(--color-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .philosophy-quote .author {
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            font-style: normal;
+            font-weight: 600;
+            color: var(--color-sage-dark);
+        }
+
+        /* ========== JOURNEY SECTION ========== */
+        .journey-section {
+            padding: 5rem 5%;
+            background: var(--color-white);
+        }
+
+        .journey-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .journey-content h2 {
+            text-align: center;
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            margin-bottom: 3rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--color-sage), var(--color-gold));
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 2.5rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            background: var(--color-white);
+            border: 3px solid var(--color-sage);
+            border-radius: 50%;
+        }
+
+        .timeline-item:nth-child(2)::before { border-color: var(--color-gold); }
+        .timeline-item:nth-child(3)::before { border-color: var(--color-slate); }
+        .timeline-item:nth-child(4)::before { border-color: var(--color-sage-dark); }
+
+        .timeline-year {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-sage-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item h3 {
+            font-family: var(--font-sans);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item p {
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* ========== MEMBERSHIPS ========== */
+        .memberships-section {
+            padding: 5rem 5%;
+            background: linear-gradient(135deg, var(--color-slate) 0%, var(--color-sage) 100%);
+        }
+
+        .memberships-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .memberships-content h2 {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            color: var(--color-white);
+            margin-bottom: 3rem;
+        }
+
+        .memberships-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .membership-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            text-align: left;
+            transition: all 0.3s var(--transition-smooth);
+        }
+
+        .membership-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .membership-card i {
+            font-size: 2rem;
+            color: var(--color-gold);
+            margin-bottom: 1rem;
+        }
+
+        .membership-card h3 {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .membership-card p {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+
+        /* ========== CTA SECTION ========== */
+        .cta-section {
+            padding: 5rem 5%;
+            background: var(--color-base);
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            margin-bottom: 1rem;
+        }
+
+        .cta-content h2 span {
+            font-style: italic;
+            color: var(--color-sage-dark);
+        }
+
+        .cta-content p {
+            color: var(--color-text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--color-sage);
+            color: var(--color-white);
+            border-radius: var(--radius-xl);
+            font-weight: 500;
+            transition: all 0.3s var(--transition-smooth);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-sage-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: transparent;
+            color: var(--color-text);
+            border: 1.5px solid var(--color-text-muted);
+            border-radius: var(--radius-xl);
+            font-weight: 500;
+            transition: all 0.3s var(--transition-smooth);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--color-sage);
+            color: var(--color-sage-dark);
+            transform: translateY(-3px);
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background: var(--color-text);
+            color: var(--color-base);
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+        }
+
+        .footer-logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-base);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo i { color: var(--color-sage); }
+
+        .footer-tagline {
+            color: rgba(249, 247, 244, 0.6);
+            font-size: 0.95rem;
+            max-width: 280px;
+        }
+
+        .footer-nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .footer-nav-column h4 {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.25rem;
+            color: var(--color-gold);
+        }
+
+        .footer-nav-column a {
+            display: block;
+            color: rgba(249, 247, 244, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            transition: color 0.3s;
+        }
+
+        .footer-nav-column a:hover { color: var(--color-base); }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(249, 247, 244, 0.1);
+            color: rgba(249, 247, 244, 0.5);
+            font-size: 0.85rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .about-hero-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .about-image-container {
+                max-width: 350px;
+                margin: 0 auto;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .footer-nav { flex-wrap: wrap; gap: 2rem; }
+            .timeline { padding-left: 1.5rem; }
+        }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .nav-cta { display: none; }
+            .page-header { padding: 8rem 4% 3rem; }
+            .page-header h1 { font-size: 2.25rem; }
+            .page-header p { font-size: 1rem; }
+            
+            .about-hero { padding: 3rem 4%; }
+            .about-intro h2 { font-size: 1.75rem; }
+            .lead-text { font-size: 1rem; }
+            
+            .philosophy-section { padding: 3rem 4%; }
+            .philosophy-quote { padding: 1.5rem; }
+            .philosophy-quote p { font-size: 1.15rem; }
+            .philosophy-quote::before { font-size: 3rem; top: 0; left: 15px; }
+            
+            .journey-section { padding: 3rem 4%; }
+            .timeline { padding-left: 1.25rem; }
+            
+            .memberships-section { padding: 3rem 4%; }
+            .memberships-grid { grid-template-columns: 1fr; gap: 1rem; }
+            
+            .cta-section { padding: 3rem 4%; }
+            .cta-buttons { flex-direction: column; }
+            .cta-buttons a { width: 100%; justify-content: center; }
+            
+            .credentials-grid { justify-content: center; }
+            .image-accent { width: 80px; height: 80px; top: -10px; left: -10px; }
+            .image-badge { padding: 1rem; bottom: -10px; right: -10px; }
+            .image-badge .years { font-size: 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .page-header { padding: 7rem 4% 2.5rem; }
+            .page-header h1 { font-size: 1.875rem; }
+            .breadcrumb { font-size: 0.8rem; }
+            .about-intro h2 { font-size: 1.5rem; }
+            .philosophy-content h2 { font-size: 1.5rem; }
+            .journey-content h2 { font-size: 1.5rem; }
+            .memberships-content h2 { font-size: 1.5rem; }
+            .timeline-item { padding-left: 1.5rem; }
+            .timeline-year { font-size: 1.1rem; }
+            .timeline-item h3 { font-size: 1rem; }
+        }
+
+        /* Touch optimizations */
+        @media (hover: none) {
+            .membership-card:hover { transform: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="ph-fill ph-tooth"></i>
+            Serenity
+        </a>
+        <ul class="nav-links">
+            <li><a href="about.html" class="active">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="testimonials.html">Testimonials</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="booking.html" class="nav-cta">Book Appointment</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="testimonials.html">Testimonials</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="booking.html" class="nav-cta" style="display: inline-block; margin-top: 1rem; text-align: center;">Book Appointment</a>
+    </div>
+
+    <header class="page-header">
+        <h1>Meet Dr. <span>Alexandra Chen</span></h1>
+        <p>Discover the dedicated professional behind thousands of beautiful smiles</p>
+        <div class="breadcrumb">
+            <a href="index.html">Home</a>
+            <span>/</span>
+            <span>About</span>
+        </div>
+    </header>
+
+    <section class="about-hero">
+        <div class="about-hero-grid">
+            <div class="about-image-container">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&q=80" alt="Dr. Alexandra Chen">
+                </div>
+                <div class="image-accent"></div>
+                <div class="image-badge">
+                    <div class="years">15+</div>
+                    <div class="label">Years Experience</div>
+                </div>
+            </div>
+            <div class="about-intro">
+                <h2>A Passion for <span>Excellence</span></h2>
+                <p class="lead-text">Dr. Alexandra Chen is a board-certified dentist with over 15 years of experience in cosmetic and restorative dentistry. After graduating with honors from Stanford University School of Dentistry, she completed her residency at UCLA, specializing in advanced cosmetic procedures and dental implantology.</p>
+                <p style="margin-bottom: 2rem;">Throughout her career, Dr. Chen has remained committed to continuing education, attending prestigious conferences and training programs worldwide. She combines her extensive expertise with a gentle, compassionate approach that puts even the most anxious patients at ease.</p>
+                
+                <div class="credentials-grid">
+                    <span class="credential-badge"><i class="ph-fill ph-graduation-cap"></i> DDS, Stanford University</span>
+                    <span class="credential-badge"><i class="ph-fill ph-certificate"></i> Board Certified</span>
+                    <span class="credential-badge"><i class="ph-fill ph-medal"></i> Top Dentist 2024</span>
+                    <span class="credential-badge"><i class="ph-fill ph-award"></i> Innovation Award</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="philosophy-section">
+        <div class="philosophy-content">
+            <h2>Philosophy of Care</h2>
+            <div class="philosophy-quote">
+                <p>"Every patient deserves to feel heard, comfortable, and confident. I believe in treating people, not just teeth — taking the time to understand your unique needs and creating personalized solutions that last. A beautiful smile begins with trust, and trust is built through genuine care and exceptional results."</p>
+                <span class="author">— Dr. Alexandra Chen</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="journey-section">
+        <div class="journey-content">
+            <h2>Professional Journey</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2009</div>
+                    <h3>Doctor of Dental Surgery</h3>
+                    <p>Graduated with honors from Stanford University School of Dentistry, receiving the Outstanding Achievement in Cosmetic Dentistry award.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2010-2012</div>
+                    <h3>Residency Program</h3>
+                    <p>Completed advanced residency training at UCLA, focusing on implant dentistry, complex restorations, and sedation dentistry.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2013</div>
+                    <h3>Founded Serenity Dental</h3>
+                    <p>Opened her private practice with a vision to create a calm, welcoming environment that redefines the dental experience.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-year">2024</div>
+                    <h3>Expanded to Multiple Locations</h3>
+                    <p>Celebrated serving over 1,200 patients and opened two additional locations to make premium dental care accessible to more communities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="memberships-section">
+        <div class="memberships-content">
+            <h2>Professional Memberships & Certifications</h2>
+            <div class="memberships-grid">
+                <div class="membership-card">
+                    <i class="ph-fill ph-users-three"></i>
+                    <h3>American Dental Association</h3>
+                    <p>Active member since 2009, participating in continuing education and advocacy programs.</p>
+                </div>
+                <div class="membership-card">
+                    <i class="ph-fill ph-sparkle"></i>
+                    <h3>Academy of Cosmetic Dentistry</h3>
+                    <p>Accredited member, recognized for excellence in aesthetic dental procedures.</p>
+                </div>
+                <div class="membership-card">
+                    <i class="ph-fill ph-implant"></i>
+                    <h3>International Congress of Oral Implantologists</h3>
+                    <p>Fellow status, demonstrating expertise in dental implant placement and restoration.</p>
+                </div>
+                <div class="membership-card">
+                    <i class="ph-fill ph-heartbeat"></i>
+                    <h3>Academy of General Dentistry</h3>
+                    <p>Master AGD member, committed to providing comprehensive dental care.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Ready to <span>Meet Dr. Chen</span>?</h2>
+            <p>Schedule a consultation and experience the difference of truly personalized dental care.</p>
+            <div class="cta-buttons">
+                <a href="booking.html" class="btn-primary">
+                    <i class="ph-bold ph-calendar-plus"></i>
+                    Book Consultation
+                </a>
+                <a href="contact.html" class="btn-ghost">
+                    <i class="ph-bold ph-map-pin"></i>
+                    Visit Our Office
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <i class="ph-fill ph-tooth"></i>
+                    Serenity
+                </div>
+                <p class="footer-tagline">Premium dental care in an atmosphere of tranquility. Your smile is our masterpiece.</p>
+            </div>
+            <nav class="footer-nav">
+                <div class="footer-nav-column">
+                    <h4>Quick Links</h4>
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="services.html">Services</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-nav-column">
+                    <h4>Services</h4>
+                    <a href="services.html">General Dentistry</a>
+                    <a href="services.html">Cosmetic Dentistry</a>
+                    <a href="services.html">Orthodontics</a>
+                    <a href="services.html">Emergency Care</a>
+                </div>
+                <div class="footer-nav-column">
+                    <h4>Contact</h4>
+                    <a href="tel:+13105558273">(310) 555-8273</a>
+                    <a href="mailto:hello@serenitydental.com">hello@serenitydental.com</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </nav>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Serenity Dental & Medical. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const scrollProgress = document.getElementById('scrollProgress');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            scrollProgress.style.width = scrollPercent + '%';
+        });
+
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+
+        function toggleMobileMenu() {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            mobileOverlay.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        hamburger.addEventListener('click', toggleMobileMenu);
+        mobileOverlay.addEventListener('click', toggleMobileMenu);
+    </script>
+</body>
+</html>

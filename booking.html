@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment | Serenity Dental & Medical</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+    <style>
+        :root {
+            --color-base: #F9F7F4;
+            --color-base-alt: #F5F2ED;
+            --color-text: #2C2C2C;
+            --color-text-muted: #5A5A5A;
+            --color-sage: #8AAF9E;
+            --color-sage-dark: #6B917C;
+            --color-slate: #7A9BB5;
+            --color-gold: #C9A96E;
+            --color-white: #FFFFFF;
+            
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-sans: 'DM Sans', system-ui, sans-serif;
+            
+            --shadow-soft: 0 4px 20px rgba(44, 44, 44, 0.06);
+            --shadow-medium: 0 8px 30px rgba(44, 44, 44, 0.1);
+            --shadow-lifted: 0 15px 40px rgba(44, 44, 44, 0.12);
+            
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 40px;
+            
+            --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        
+        body {
+            font-family: var(--font-sans);
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--color-text);
+            background-color: var(--color-base);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 500; line-height: 1.2; }
+        a { text-decoration: none; color: inherit; }
+        
+        .scroll-progress {
+            position: fixed; top: 0; left: 0;
+            width: 0%; height: 3px;
+            background: linear-gradient(90deg, var(--color-sage), var(--color-gold));
+            z-index: 10001; transition: width 0.1s linear;
+        }
+
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%;
+            padding: 1.25rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000;
+            background: rgba(249, 247, 244, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            font-weight: 600;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .logo i { color: var(--color-sage); }
+
+        .nav-links {
+            display: flex; align-items: center; gap: 2.5rem;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--color-text-muted);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 1.5px;
+            background: var(--color-gold);
+            transition: width 0.3s var(--transition-smooth);
+        }
+
+        .nav-links a:hover, .nav-links a.active { color: var(--color-text); }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+        .nav-cta {
+            padding: 0.75rem 1.75rem;
+            background: var(--color-sage);
+            color: var(--color-white);
+            border-radius: var(--radius-xl);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s var(--transition-smooth);
+        }
+
+        .nav-cta:hover { background: var(--color-sage-dark); transform: translateY(-2px); }
+
+        .hamburger {
+            display: none;
+            flex-direction: column; gap: 5px;
+            cursor: pointer; padding: 10px; z-index: 1001;
+        }
+        .hamburger span {
+            width: 25px; height: 2px;
+            background: var(--color-text);
+            transition: all 0.3s var(--transition-smooth);
+        }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .mobile-menu {
+            position: fixed; top: 0; right: -100%;
+            width: 80%; max-width: 350px; height: 100vh;
+            background: var(--color-white);
+            padding: 6rem 2rem 2rem;
+            transition: right 0.4s var(--transition-smooth);
+            box-shadow: var(--shadow-lifted); z-index: 999;
+        }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu a {
+            display: block; padding: 1rem 0;
+            font-size: 1.25rem; font-weight: 500;
+            border-bottom: 1px solid var(--color-base-alt);
+        }
+
+        .mobile-overlay {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0; visibility: hidden;
+            transition: all 0.3s var(--transition-smooth); z-index: 998;
+        }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+
+        /* Page Header */
+        .page-header {
+            padding: 10rem 5% 5rem;
+            background: linear-gradient(135deg, var(--color-sage) 0%, var(--color-slate) 100%);
+            text-align: center;
+            position: relative;
+        }
+        .page-header::before {
+            content: '';
+            position: absolute; top: -30%; right: -10%;
+            width: 60%; height: 150%;
+            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        }
+        .page-header h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            color: var(--color-white);
+            margin-bottom: 1rem;
+        }
+        .page-header h1 span { font-style: italic; }
+        .page-header p {
+            font-size: 1.15rem; color: rgba(255, 255, 255, 0.9);
+            max-width: 600px; margin: 0 auto;
+        }
+        .breadcrumb {
+            display: flex; justify-content: center; gap: 0.75rem;
+            margin-top: 2rem; font-size: 0.9rem; color: rgba(255, 255, 255, 0.8);
+        }
+        .breadcrumb a { color: var(--color-white); }
+        .breadcrumb a:hover { text-decoration: underline; }
+
+        /* Booking Section */
+        .booking-section {
+            padding: 5rem 5%;
+            background: var(--color-white);
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 4rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        /* Info Side */
+        .booking-info h2 {
+            font-size: clamp(1.75rem, 3vw, 2.25rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .booking-info > p {
+            color: var(--color-text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .benefits-list {
+            margin-bottom: 2rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--color-base-alt);
+        }
+
+        .benefit-item:last-child { border-bottom: none; }
+
+        .benefit-icon {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--color-base);
+            border-radius: var(--radius-sm);
+            color: var(--color-sage);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .benefit-text h3 {
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .benefit-text p {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+
+        .contact-card {
+            background: var(--color-base);
+            padding: 1.5rem;
+            border-radius: var(--radius-md);
+        }
+
+        .contact-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-card p {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-card p i {
+            color: var(--color-sage);
+        }
+
+        /* Form Side */
+        .booking-form-container {
+            background: var(--color-base);
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+        }
+
+        .booking-form-container h3 {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #E5E2DD;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .form-section-title {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-sage-dark);
+            margin-bottom: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group label .required {
+            color: #E74C3C;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1.5px solid #E5E2DD;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            color: var(--color-text);
+            background: var(--color-white);
+            transition: all 0.3s var(--transition-smooth);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-sage);
+            box-shadow: 0 0 0 3px rgba(138, 175, 158, 0.15);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #aaa;
+        }
+
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%235A5A5A' viewBox='0 0 256 256'%3E%3Cpath d='M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 0.25rem;
+            accent-color: var(--color-sage);
+        }
+
+        .checkbox-group label {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--color-text-muted);
+            cursor: pointer;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: var(--color-sage);
+            color: var(--color-white);
+            border: none;
+            border-radius: var(--radius-xl);
+            font-family: var(--font-sans);
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .form-submit:hover {
+            background: var(--color-sage-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .form-submit:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--color-sage);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            color: var(--color-white);
+        }
+
+        .success-message h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-message p {
+            color: var(--color-text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 5rem 5%;
+            background: var(--color-base);
+        }
+
+        .faq-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-content h2 {
+            text-align: center;
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            margin-bottom: 3rem;
+        }
+
+        .faq-item {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            background: none;
+            border: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text);
+            text-align: left;
+            transition: background 0.3s;
+        }
+
+        .faq-question:hover {
+            background: var(--color-base);
+        }
+
+        .faq-question i {
+            transition: transform 0.3s;
+            color: var(--color-sage);
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+        }
+
+        .faq-answer p {
+            padding: 0 1.5rem 1.25rem;
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--color-text);
+            color: var(--color-base);
+            padding: 4rem 5% 2rem;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+        }
+        .footer-logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex; align-items: center; gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .footer-logo i { color: var(--color-sage); }
+        .footer-tagline {
+            color: rgba(249, 247, 244, 0.6);
+            font-size: 0.95rem;
+            max-width: 280px;
+        }
+        .footer-nav { display: flex; gap: 3rem; }
+        .footer-nav-column h4 {
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.25rem;
+            color: var(--color-gold);
+        }
+        .footer-nav-column a {
+            display: block;
+            color: rgba(249, 247, 244, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+        .footer-nav-column a:hover { color: var(--color-base); }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(249, 247, 244, 0.1);
+            color: rgba(249, 247, 244, 0.5);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 1024px) {
+            .booking-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            .booking-info { order: 2; }
+            .footer-content { flex-direction: column; gap: 2rem; }
+            .footer-nav { flex-wrap: wrap; gap: 2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .nav-cta { display: none; }
+            .page-header { padding: 8rem 4% 3rem; }
+            .page-header h1 { font-size: 2.25rem; }
+            .page-header p { font-size: 1rem; }
+            
+            .booking-section { padding: 3rem 4%; }
+            .booking-info h2 { font-size: 1.75rem; }
+            .booking-info > p { font-size: 0.95rem; }
+            
+            .benefit-item {
+                gap: 0.75rem;
+                padding: 0.75rem 0;
+            }
+            .benefit-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+            
+            .booking-form-container {
+                padding: 1.5rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-section {
+                padding-bottom: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+            
+            .form-section-title {
+                font-size: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .form-submit {
+                padding: 1rem;
+                font-size: 0.95rem;
+            }
+            
+            .faq-section { padding: 3rem 4%; }
+            .faq-question {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+            .faq-answer p {
+                padding: 0 1rem 1rem;
+                font-size: 0.85rem;
+            }
+            
+            .contact-card {
+                padding: 1.25rem;
+            }
+            
+            .success-message {
+                padding: 2rem 1rem;
+            }
+            .success-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header { padding: 7rem 4% 2.5rem; }
+            .page-header h1 { font-size: 1.875rem; }
+            .breadcrumb { font-size: 0.8rem; }
+            .booking-content h2 { font-size: 1.5rem; }
+            .faq-content h2 { font-size: 1.5rem; }
+            .booking-form-container h3 { font-size: 1.25rem; }
+            .checkbox-group label { font-size: 0.85rem; }
+        }
+
+        /* Touch optimizations */
+        @media (hover: none) {
+            .form-submit:hover { transform: none; }
+            .form-submit:active { background: var(--color-sage-dark); }
+            .faq-question:hover { background: transparent; }
+            .faq-item.active .faq-answer { max-height: 300px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <i class="ph-fill ph-tooth"></i>
+            Serenity
+        </a>
+        <ul class="nav-links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="testimonials.html">Testimonials</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="booking.html" class="nav-cta active">Book Appointment</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </nav>
+
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="testimonials.html">Testimonials</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="contact.html">Contact</a>
+        <a href="booking.html" class="nav-cta" style="display: inline-block; margin-top: 1rem; text-align: center;">Book Appointment</a>
+    </div>
+
+    <header class="page-header">
+        <h1>Book Your <span>Appointment</span></h1>
+        <p>Take the first step towards your perfect smile. Schedule your consultation today.</p>
+        <div class="breadcrumb">
+            <a href="index.html">Home</a>
+            <span>/</span>
+            <span>Book Appointment</span>
+        </div>
+    </header>
+
+    <section class="booking-section">
+        <div class="booking-grid">
+            <div class="booking-info">
+                <h2>Your Smile Journey Starts Here</h2>
+                <p>Book your appointment online in just a few minutes. Our team will confirm your visit within 24 hours.</p>
+
+                <div class="benefits-list">
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><i class="ph-fill ph-clock"></i></div>
+                        <div class="benefit-text">
+                            <h3>Quick & Easy</h3>
+                            <p>Book online in under 5 minutes, anytime</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><i class="ph-fill ph-calendar-check"></i></div>
+                        <div class="benefit-text">
+                            <h3>Flexible Scheduling</h3>
+                            <p>Evening & weekend appointments available</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><i class="ph-fill ph-heart"></i></div>
+                        <div class="benefit-text">
+                            <h3>Personalized Care</h3>
+                            <p>Tailored treatment plans for your needs</p>
+                        </div>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="benefit-icon"><i class="ph-fill ph-shield-check"></i></div>
+                        <div class="benefit-text">
+                            <h3>Insurance Friendly</h3>
+                            <p>We work with most major insurance plans</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-card">
+                    <h3>Need Help?</h3>
+                    <p><i class="ph-fill ph-phone"></i> (310) 555-8273</p>
+                    <p><i class="ph-fill ph-envelope"></i> hello@serenitydental.com</p>
+                </div>
+            </div>
+
+            <div class="booking-form-container">
+                <div id="bookingFormWrapper">
+                    <h3>Request an Appointment</h3>
+                    
+                    <form id="appointmentForm">
+                        <div class="form-section">
+                            <div class="form-section-title">Personal Information</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">First Name <span class="required">*</span></label>
+                                    <input type="text" id="firstName" name="firstName" placeholder="John" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name <span class="required">*</span></label>
+                                    <input type="text" id="lastName" name="lastName" placeholder="Doe" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">Email <span class="required">*</span></label>
+                                    <input type="email" id="email" name="email" placeholder="john@email.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone <span class="required">*</span></label>
+                                    <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="dateOfBirth">Date of Birth</label>
+                                <input type="date" id="dateOfBirth" name="dateOfBirth">
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="form-section-title">Appointment Details</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="appointmentDate">Preferred Date <span class="required">*</span></label>
+                                    <input type="date" id="appointmentDate" name="appointmentDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="appointmentTime">Preferred Time</label>
+                                    <select id="appointmentTime" name="appointmentTime">
+                                        <option value="">Select a time</option>
+                                        <option value="morning-early">Morning (8:00 - 10:00)</option>
+                                        <option value="morning-late">Late Morning (10:00 - 12:00)</option>
+                                        <option value="afternoon-early">Early Afternoon (12:00 - 2:00)</option>
+                                        <option value="afternoon-late">Late Afternoon (2:00 - 4:00)</option>
+                                        <option value="evening">Evening (4:00 - 6:00)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="service">Service Needed <span class="required">*</span></label>
+                                <select id="service" name="service" required>
+                                    <option value="">Select a service</option>
+                                    <option value="general">General Dentistry (Checkup & Cleaning)</option>
+                                    <option value="cosmetic">Cosmetic Dentistry</option>
+                                    <option value="whitening">Teeth Whitening</option>
+                                    <option value="invisalign">Invisalign / Orthodontics</option>
+                                    <option value="implants">Dental Implants</option>
+                                    <option value="crowns">Crowns & Bridges</option>
+                                    <option value="root-canal">Root Canal Therapy</option>
+                                    <option value="extraction">Tooth Extraction</option>
+                                    <option value="emergency">Dental Emergency</option>
+                                    <option value="other">Other / Not Sure</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="dentist">Preferred Dentist</label>
+                                <select id="dentist" name="dentist">
+                                    <option value="">No preference</option>
+                                    <option value="dr-chen">Dr. Alexandra Chen</option>
+                                    <option value="dr-smith">Dr. Sarah Smith</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="form-section-title">Additional Information</div>
+                            <div class="form-group">
+                                <label for="reason">Reason for Visit</label>
+                                <textarea id="reason" name="reason" placeholder="Please describe your concerns or goals for this visit..."></textarea>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="newPatient" name="newPatient">
+                                <label for="newPatient">I am a new patient</label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="form-submit">
+                            <i class="ph-bold ph-calendar-check"></i>
+                            Request Appointment
+                        </button>
+                    </form>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    <div class="success-icon">
+                        <i class="ph-fill ph-check"></i>
+                    </div>
+                    <h3>Appointment Requested!</h3>
+                    <p>Thank you for your request. Our team will contact you within 24 hours to confirm your appointment.</p>
+                    <p style="font-weight: 500; color: var(--color-text);">Check your email for confirmation details.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="faq-content">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <button class="faq-question">
+                    What should I expect at my first visit?
+                    <i class="ph-fill ph-caret-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Your first visit will include a comprehensive examination, digital X-rays if needed, and a consultation with Dr. Chen to discuss your oral health goals. We'll create a personalized treatment plan tailored to your needs.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <button class="faq-question">
+                    How long does a typical appointment take?
+                    <i class="ph-fill ph-caret-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Regular checkups and cleanings typically take 45-60 minutes. More complex procedures or new patient exams may take 90 minutes. We'll always give you an accurate time estimate when booking.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <button class="faq-question">
+                    What insurance do you accept?
+                    <i class="ph-fill ph-caret-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>We accept most major dental insurance plans including Delta Dental, Cigna, Aetna, MetLife, and United Healthcare. Our team will help you understand your benefits and maximize your coverage.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <button class="faq-question">
+                    What if I need to cancel or reschedule?
+                    <i class="ph-fill ph-caret-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>We understand plans change. Please contact us at least 24 hours before your appointment to cancel or reschedule at no charge. We value your time and appreciate advance notice.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <i class="ph-fill ph-tooth"></i>
+                    Serenity
+                </div>
+                <p class="footer-tagline">Premium dental care in an atmosphere of tranquility. Your smile is our masterpiece.</p>
+            </div>
+            <nav class="footer-nav">
+                <div class="footer-nav-column">
+                    <h4>Quick Links</h4>
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="services.html">Services</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-nav-column">
+                    <h4>Services</h4>
+                    <a href="services.html">General Dentistry</a>
+                    <a href="services.html">Cosmetic Dentistry</a>
+                    <a href="services.html">Orthodontics</a>
+                    <a href="services.html">Emergency Care</a>
+                </div>
+                <div class="footer-nav-column">
+                    <h4>Contact</h4>
+                    <a href="tel:+13105558273">(310) 555-8273</a>
+                    <a href="mailto:hello@serenitydental.com">hello@serenitydental.com</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </nav>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Serenity Dental & Medical. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const scrollProgress = document.getElementById('scrollProgress');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            scrollProgress.style.width = scrollPercent + '%';
+        });
+
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+
+        function toggleMobileMenu() {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            mobileOverlay.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        hamburger.addEventListener('click', toggleMobileMenu);
+        mobileOverlay.addEventListener('click', toggleMobileMenu);
+
+        // Set minimum date for appointment
+        const dateInput = document.getElementById('appointmentDate');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+
+        // FAQ Accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                // Close other items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                    }
+                });
+                // Toggle current item
+                item.classList.toggle('active');
+            });
+        });
+
+        // Form Submission
+        const appointmentForm = document.getElementById('appointmentForm');
+        const formWrapper = document.getElementById('bookingFormWrapper');
+        const successMessage = document.getElementById('successMessage');
+
+        appointmentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('.form-submit');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="ph-fill ph-spinner"></i> Processing...';
+            submitBtn.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                formWrapper.style.display = 'none';
+                successMessage.classList.add('show');
+                
+                // Scroll to success message
+                successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
