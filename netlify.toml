@@ -6,3 +6,8 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+# Named explicitly: this site was created as plain static files, and without
+# this line Netlify builds the app but serves nothing.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
