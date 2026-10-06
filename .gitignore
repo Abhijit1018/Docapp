@@ -1,7 +1,11 @@
-# Dependencies
+# Dependencies and build output
 node_modules/
-package-lock.json
-package.json
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+.vercel/
+.env*.local
 
 # IDE
 .vscode/
@@ -13,15 +17,14 @@ package.json
 .DS_Store
 Thumbs.db
 
-# Git
-.git/
-
-# Skills
+# Agent tool folders
 skills/
 skills-lock.json
 .agent/
 .agents/
 .continue/
 .kiro/
+.kilo/
 .qoder/
 .trae/
+.remember/

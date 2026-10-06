@@ -1,0 +1,253 @@
+@import "tailwindcss";
+
+/* The rupee sign comes from the device's own font. Without this the browser
+   downloads a 160 KB extended-Latin file for that one glyph. */
+@font-face {
+  font-family: "Rupee";
+  src: local("Roboto"), local("Noto Sans"), local("Segoe UI"), local("Arial");
+  unicode-range: U+20B9;
+}
+
+/*
+  ClinicDesk design tokens.
+
+  A clinic or hospital site has to read as a medical business at first
+  glance, so the palette is the one patients already trust: clinical blue on
+  white, with teal for "open / available" and a deep slate-navy for text.
+
+  Why this blue as the accent:
+  - Blue is the colour of medicine in India, from hospital signage to the
+    pharmacy cross. A doctor seeing their own name on it recognises it as
+    theirs straight away.
+  - It is dark enough to carry white text at 6:1, so the one primary action
+    stays readable on a cheap phone in afternoon sun.
+  - It is used only for actions and the current state (the chosen slot, the
+    patient with the doctor). Teal is kept for "open now" and "available",
+    so the two never compete.
+*/
+@theme {
+  --color-*: initial;
+  --color-paper: #f4f7fb;
+  --color-surface: #ffffff;
+  --color-ink: #0e2238;
+  --color-ink-soft: #50617a;
+  --color-line: #d9e1ec;
+  --color-line-strong: #8494aa;
+  --color-accent: #0b5fbf;
+  --color-accent-deep: #084a96;
+  --color-accent-wash: #e6f0fb;
+  --color-teal: #0b7f72;
+  --color-teal-wash: #dff3f0;
+  /* Desk statuses. Each also has its own shape and a text label. */
+  --color-arrived: #8f5400;
+  --color-arrived-wash: #fdf0d5;
+  --color-done: #1a7444;
+  --color-done-wash: #e0f1e6;
+  --color-missed: #b2251e;
+  --color-missed-wash: #fbe6e4;
+
+  --font-*: initial;
+  --font-sans: "Rupee", var(--font-latin), var(--font-deva), var(--font-gujr), system-ui, sans-serif;
+
+  --radius-*: initial;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 14px;
+  --radius-2xl: 20px;
+  --radius-full: 999px;
+
+  --shadow-*: initial;
+  --shadow-card: 0 1px 2px rgb(14 34 56 / 0.06), 0 10px 28px rgb(14 34 56 / 0.07);
+
+  --animate-arrive: arrive 2.6s ease-out 1;
+  --animate-travel: travel 0.7s cubic-bezier(0.3, 0, 0.2, 1) 1 both;
+
+  @keyframes arrive {
+    0%, 35% { background-color: #bcd8f7; }
+    100% { background-color: transparent; }
+  }
+  @keyframes travel {
+    0% { left: 0; opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+  }
+}
+
+@layer base {
+  html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 16.5px;
+    line-height: 1.55;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+  }
+  /* Devanagari and Gujarati carry marks above and below the line. */
+  html:lang(hi), html:lang(gu) { line-height: 1.7; }
+  body { min-height: 100dvh; }
+  h1, h2, h3 { font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; text-wrap: balance; }
+  html:lang(hi) :is(h1, h2, h3), html:lang(gu) :is(h1, h2, h3) { line-height: 1.4; letter-spacing: 0; }
+  :focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; border-radius: 4px; }
+  button, a, select, summary { -webkit-tap-highlight-color: transparent; }
+  button { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+  dialog::backdrop { background: rgb(14 34 56 / 0.5); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+}
+
+@layer components {
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    min-height: 48px; padding: 0 1.15rem;
+    border: 1.5px solid var(--color-line-strong); border-radius: var(--radius-md);
+    background: var(--color-surface); color: var(--color-ink);
+    font-weight: 600; line-height: 1.2; text-decoration: none; white-space: nowrap;
+    transition: background-color 120ms, border-color 120ms, transform 80ms;
+  }
+  .btn:hover { background: var(--color-accent-wash); border-color: var(--color-accent); }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.5; }
+  .btn-primary { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+  .btn-primary:hover { background: var(--color-accent-deep); border-color: var(--color-accent-deep); }
+  .btn-ink { background: var(--color-accent); border-color: var(--color-accent); color: #fff; }
+  .btn-ink:hover { background: var(--color-accent-deep); border-color: var(--color-accent-deep); }
+  .btn-quiet { font-weight: 500; }
+  .btn-sm { min-height: 36px; padding: 0 0.7rem; font-size: 0.88rem; border-radius: var(--radius-sm); }
+  /* Desk controls sit in dense rows; they still keep a 44px hit area on touch. */
+  @media (pointer: coarse) { .btn-sm { min-height: 44px; } }
+  /* Radio buttons dressed as buttons keep a visible focus ring. */
+  .btn:has(input:focus-visible) { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+
+  .field {
+    width: 100%; min-height: 52px; padding: 0 0.9rem;
+    border: 1.5px solid var(--color-line-strong); border-radius: var(--radius-md);
+    background: var(--color-surface); color: var(--color-ink); font: inherit;
+  }
+  .field:focus-visible { outline-offset: 0; border-color: var(--color-accent); border-radius: var(--radius-md); }
+  textarea.field { padding: 0.7rem 0.9rem; min-height: 96px; resize: vertical; }
+  .field-sm { min-height: 40px; font-size: 0.92rem; border-radius: var(--radius-sm); }
+  .label { display: block; margin-bottom: 0.35rem; font-weight: 600; font-size: 0.94rem; }
+
+  .wide-digits { font-variant-numeric: tabular-nums; }
+  .wrap { margin-inline: auto; max-width: 1140px; padding-inline: 1.25rem; }
+  @media (min-width: 1024px) { .wrap { padding-inline: 2rem; } }
+  .card { border: 1px solid var(--color-line); border-radius: var(--radius-lg); background: var(--color-surface); }
+}
+
+/* ---- Display type and motion -------------------------------------------- */
+
+@theme {
+  --font-display: "Rupee", var(--font-display-latin), var(--font-deva), var(--font-gujr), system-ui, sans-serif;
+  --shadow-float: 0 2px 4px rgb(14 34 56 / 0.06), 0 18px 44px rgb(14 34 56 / 0.16);
+  --animate-enter: rise 0.75s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-settle: settle 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-bob: bob 6s ease-in-out infinite;
+  --animate-slide: slide 38s linear infinite;
+  --animate-pulse-dot: none;
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(26px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes settle {
+    from { transform: scale(1.09); }
+    to { transform: none; }
+  }
+  @keyframes bob {
+    50% { transform: translateY(-9px); }
+  }
+  @keyframes slide {
+    to { transform: translateX(-50%); }
+  }
+  @keyframes pulse-dot {
+    0% { transform: scale(1); opacity: 0.55; }
+    100% { transform: scale(2.8); opacity: 0; }
+  }
+}
+
+@layer base {
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.025em; }
+  h3 { font-weight: 700; letter-spacing: -0.01em; }
+  html:lang(hi) :is(h1, h2, h3), html:lang(gu) :is(h1, h2, h3) { font-weight: 700; }
+}
+
+@layer components {
+  /* Sections rise into place as they scroll into view; Motion.tsx marks each
+     one with data-in. Hidden only when scripts run (html.js), so the page
+     is complete without them. */
+  .js .rise {
+    opacity: 0;
+    transform: translateY(56px) scale(0.97);
+    transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), transform 1s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: calc(var(--d, 0) * 120ms);
+  }
+  .js .rise[data-in] { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rise { transform: none; } }
+
+  /* Headline words climb out from behind a mask, one after another. */
+  .word-clip { display: inline-block; overflow: hidden; vertical-align: bottom; padding: 0.14em 0 0.16em; margin: -0.14em 0 -0.16em; }
+  .word { display: inline-block; transform: translateY(115%); animation: word-up 0.95s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; animation-delay: calc(var(--i, 0) * 85ms + 200ms); }
+  @keyframes word-up { to { transform: none; } }
+
+  /* The hero photos drift slowly while they are on screen. */
+  .kenburns { animation: kenburns 7.5s ease-out both; }
+  @keyframes kenburns {
+    from { transform: scale(1.16) translate3d(2%, 1.5%, 0); }
+    to { transform: scale(1.02); }
+  }
+  .tick { animation: tick linear both; transform-origin: left; }
+  @keyframes tick { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  /* A band of light crosses the main button on hover. */
+  .shine { position: relative; overflow: hidden; }
+  .shine::before {
+    content: ""; position: absolute; inset: 0 auto 0 -60%; width: 45%;
+    background: linear-gradient(100deg, transparent, rgb(255 255 255 / 0.35), transparent);
+    transform: skewX(-18deg); transition: left 0.6s;
+  }
+  .shine:hover::before { left: 120%; }
+
+  header[data-site] { transition: box-shadow 0.3s; }
+  [data-scrolled] header[data-site] { box-shadow: 0 6px 24px rgb(14 34 56 / 0.1); }
+
+  /* The hero's load sequence; --i staggers the pieces. */
+  .enter { animation: var(--animate-enter); animation-delay: calc(var(--i, 0) * 90ms + 150ms); }
+
+  .zoom { overflow: hidden; }
+  .zoom img { transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .zoom:hover img, a:hover .zoom img, a:focus-visible .zoom img { transform: scale(1.06); }
+
+  .nudge svg { transition: transform 0.2s; }
+  .nudge:hover svg, a:hover > .nudge svg { transform: translateX(4px); }
+
+  .lift { transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s; }
+  .lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); border-color: var(--color-accent); }
+
+  .hero-wash {
+    background:
+      radial-gradient(60rem 30rem at 85% -10%, rgb(11 127 114 / 0.13), transparent 60%),
+      radial-gradient(50rem 32rem at -10% 10%, rgb(11 95 191 / 0.16), transparent 62%),
+      var(--color-paper);
+  }
+  .dots {
+    background-image: radial-gradient(rgb(11 95 191 / 0.22) 1.5px, transparent 1.5px);
+    background-size: 18px 18px;
+  }
+  .h-section { font-size: 1.75rem; }
+  @media (min-width: 1024px) { .h-section { font-size: 2.35rem; } }
+}
+
+@layer components {
+  /* A soft ring that pulses out from the "open now" dot. */
+  .animate-pulse-dot { position: relative; }
+  .animate-pulse-dot::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; background: inherit;
+    animation: pulse-dot 2s ease-out infinite;
+  }
+}
