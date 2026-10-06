@@ -1,0 +1,8 @@
+# The live site (serenity.soulplexstudios.tech) is built by Netlify from main.
+# Netlify detects Next.js and adds its own runtime for the server-rendered pages.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
